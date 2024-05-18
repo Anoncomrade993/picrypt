@@ -1,11 +1,24 @@
 /*******************
+* Name: Dess
+* Email: anoncomrade993@gmail.com
+* Copyright (c) 2024, Dess. All rights reserved.
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 *
-*
-*
-*
-*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.
 *******************/
 
+
+///Inverse Substitution Box
 const INV_AES_SBOX: [u8; 256] = [
     0x52, 0x09, 0x6A, 0xD5, 0x30, 0x36, 0xA5, 0x38, 0xBF, 0x40, 0xA3, 0x9E, 0x81, 0xF3, 0xD7, 0xFB,
     0x7C, 0xE3, 0x39, 0x82, 0x9B, 0x2F, 0xFF, 0x87, 0x34, 0x8E, 0x43, 0x44, 0xC4, 0xDE, 0xE9, 0xCB,
@@ -24,6 +37,8 @@ const INV_AES_SBOX: [u8; 256] = [
     0xA0, 0xE0, 0x3B, 0x4D, 0xAE, 0x2A, 0xF5, 0xB0, 0xC8, 0xEB, 0xBB, 0x3C, 0x83, 0x53, 0x99, 0x61,
     0x17, 0x2B, 0x04, 0x7E, 0xBA, 0x77, 0xD6, 0x26, 0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D,
 ];
+
+///forward Substitution Box
 const AES_SBOX: [u8; 256] = [
     0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
     0xCA, 0x82, 0xC9, 0x7D, 0xFA, 0x59, 0x47, 0xF0, 0xAD, 0xD4, 0xA2, 0xAF, 0x9C, 0xA4, 0x72, 0xC0,
@@ -47,6 +62,8 @@ const ROUND_CONSTANTS: [u8; 11] = [
 ];
 
 //HELPER FUNCTIONS
+
+///rotates 32bit word around 
 fn rot_word(word: &mut [u8; 4]) {
     let temp = word[0];
     word[0] = word[1];
@@ -55,19 +72,26 @@ fn rot_word(word: &mut [u8; 4]) {
     word[3] = temp;
 }
 
+///substitutes 32bit word with indexes-value in SBoX
 fn sub_word(word: &mut [u8; 4], sbox: &[u8; 256]) {
     for byte in word.iter_mut() {
         *byte = sbox[*byte as usize];
     }
 }
 
+///this performs Exclusive Or on two nth of a 32bit word
 fn xor_words(word1: &[u8; 4], word2: &[u8; 4]) -> [u8; 4] {
     let mut result = [0; 4];
     for i in 0..4 {
-        result[i] = word1[i] ^ word2[i];
+  result[i] = word1[i] ^ word2[i];
     }
     result
 }
+
+
+///this is the longest function in AES i would say _-_
+///this expands the provided key into vector of arrays for encryption of each block per round 
+///im still confused how it works 😂
 
 pub fn key_expansion(key: &str) -> Vec<[u8; 4]> {
     let mut w = Vec::new();
@@ -170,6 +194,9 @@ pub fn sub_pixels(pixels:&mut Vec<Vec<u8>>) {
     }
 }
 
+
+///here it is folks ,the legendary shiftRows 
+///these function pushes the values in a row to the back of the array
 pub fn shift_rows(pixels: &mut Vec<Vec<u8>>) {
     let rows: usize = pixels.len();
     let cols: usize = pixels[0].len();
@@ -184,6 +211,9 @@ pub fn shift_rows(pixels: &mut Vec<Vec<u8>>) {
         }
     }
 }
+
+///ahhh MixColumn ,this mixes the columns 
+///uses glaios field multiplication on
 pub fn mix_columns(state: &mut Vec<Vec<u8>>) {
     let rows = state.len();
     let cols = state[0].len();
@@ -206,6 +236,8 @@ pub fn mix_columns(state: &mut Vec<Vec<u8>>) {
 
 
 ///INVERSE FUNCTIONS
+
+
 pub fn inv_sub_pixels( pixels:&mut Vec<Vec<u8>>) {
     let rows: usize = pixels.len();
     let cols: usize = pixels[0].len();
