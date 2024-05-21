@@ -72,3 +72,4 @@ fn flatten_vector(&self, buffer: Vec<Vec<u8>>) -> Result<Vec<u8>, Box<dyn error:
         Ok(())
     }
 }
+  
