@@ -24,13 +24,14 @@ fn D_2D(pixels:&mut Vec<u8>, rows: usize, cols: usize) -> Vec<Vec<u8>> {
 #[wasm_bindgen]
 ///wrapper function for the decryption function 
 pub fn decrypt_pixels(pixels:&mut Vec<Vec<u8>>,key:&str) -> Vec<u8>{
-  let res = decrypt(pixels,key).unwrap();
+  let res = decrypt(&mut pixels,key).unwrap();
 }
 
 #[wasm_bindgen]
 ///wrapper function for the encryption function 
-pub fn encrypt_pixels(pixels:&mut Vec<Vec<u8>>) -> Vec<u8>{
-   let res = encrypt(pixels,key).unwrap();
+pub fn encrypt_pixels(pixels:&mut Vec<u8>) -> Vec<u8>{
+   let mut 1d = D_2D(&pixels).unwrap();
+   let res = encrypt(&mut 1d,key).unwrap();
    res
 }
 
