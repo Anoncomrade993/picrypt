@@ -18,10 +18,7 @@
 *******************/
 use crate::core::aes;
 use std::io;
-use wasm_bindgen::prelude::*;
 
-
-#[wasm_bindgen]
 pub fn encrypt(pixels: &mut Vec<Vec<u8>>, key: &str) -> Result<Vec<Vec<u8>>, io::Error> {
     // Key Expansion
     let mut round_keys = aes::key_expansion(key);
@@ -47,7 +44,7 @@ pub fn encrypt(pixels: &mut Vec<Vec<u8>>, key: &str) -> Result<Vec<Vec<u8>>, io:
 
     Ok(pixels.clone()) // Return the encrypted pixels
 }
-#[wasm_bindgen]
+
 pub fn decrypt(pixels: &mut Vec<Vec<u8>>, key: &str) -> Result<Vec<Vec<u8>>, io::Error> {
     // Key Expansion
     let round_keys = aes::key_expansion(key);
