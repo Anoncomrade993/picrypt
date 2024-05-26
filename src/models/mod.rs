@@ -41,7 +41,7 @@ pub async fn insert_image(&self,collection:Collection<Image>) -> Result<()> {
     Ok(())
 }
 
-pub async fn find_image(watermark:String,key:String, collection:Collection<Self>) -> Result<bool> {
+pub async fn find_watermark(watermark:String,key:String, collection:Collection<Self>) -> Result<bool> {
     let filter = doc!{"watermark":watermark,"key":key}
     let watermark = collection.find_one(filter,None).await?
      Ok(watermark.is_some())

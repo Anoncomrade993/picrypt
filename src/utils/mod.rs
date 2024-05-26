@@ -25,3 +25,30 @@ pub fn d_2d(pixels: Vec<u8>) -> Vec<Vec<u8>> {
 
     result
 }
+
+pub fn joiner(mut data: String, watermark: String) -> String {
+    data.push_str(&watermark); // append another String
+    data
+}
+
+pub fn splitter(data: String) -> Result<(&str, &str), String> {
+    let len = data.len();
+    if len <= 6 {
+        Err(data) // Return the data as an error if it's too short
+    } else {
+        Ok((&data[len-6..], &data[..len-6])) // Return the split data as a tuple of slices
+    }
+}
+
+pub fn cleanser(data: &mut Vec<u8>, channel:u8) -> Vec<u8> {
+    let len = data.len();
+    
+    for q in (0..len).step_by(4) {
+        if let Some(pixel) = data.get_mut(q + channel as usize) { // Assume channel is q % 4
+            *pixel &= 0xFE; // Clear the least significant bit
+        } else {
+            break; // Exit loop if pixel is None
+        }
+    }
+    data.to_vec() // Return a clone of the modified data
+}
