@@ -1,10 +1,15 @@
 // Listen for messages from the main script
-onmessage = async function(event) {
-  let { pixels, message, action } = event.data;
-  let res = await post_req(pixels, message, action);
-  if (res) {
-    postMessage(res);
-  }
+onmessage = function(event) {
+  let data = event.data;
+//  console.log(pixels.length, message, action);
+  /*let res = await post_req(pixels, message, action);
+  if (res) {}
+  */
+  postMessage(data);
+
+};
+onerror = function(err) {
+  postMessage({ error: err.message });
 };
 
 const post_req = async function(pixels, message = "", action = "") {

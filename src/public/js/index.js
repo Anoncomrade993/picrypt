@@ -1,5 +1,5 @@
 
-import { load_image, updateDetails } from './mods/utils.js';
+import { worker_conn, load_image, updateDetails } from './mod/utils.js';
 
 let image_src = document.getElementById('src');
 let selector = document.querySelector('#selector');
@@ -12,6 +12,10 @@ let input_file = document.getElementById('file');
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 let err = document.getElementById('errmsg');
+
+let text_input = document.getElementById('input');
+
+
 
 btn.disabled = true;
 selector.addEventListener('click', (e) => {
@@ -51,7 +55,10 @@ input_file.addEventListener('change', function(ev) {
     }
     image_src.src = src;
   };
-
+  reader.onerror = ()=> {
+    err.innerHTML ='error reading image';
+    return
+  }
   reader.readAsDataURL(file);
 });
 
@@ -59,13 +66,18 @@ input_file.addEventListener('change', function(ev) {
 
 btn.addEventListener('click', (ev) => {
   //ev.preventDefault()
+  if(text_input.innerHTML.length < 5){
+    err.innerText ='min length of input  is 5';
+    return;
+  }
   let pixels = ctx.getImageData(0,0,canvas.width,canvas.height);
-  woker_conn(pixels.data);
+      worker_conn(pixels.data,text_input.innerHTML,"enc");
 });
 
 dec.addEventListener('click', (e) => {
   if (!imageLoaded()) {
     err.innerHTML = 'please pick an image first';
+    return;
   }
   alert('hello');
 });

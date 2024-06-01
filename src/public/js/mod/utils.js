@@ -1,8 +1,3 @@
-window.addEventListener('DOMContentLoaded', (e) => {
-
-})
-
-
 let error = document.getElementById('errmsg');
 let details = document.querySelector('.details ul');
 let image = document.querySelector('#src');
@@ -34,10 +29,12 @@ export const load_image = function(ctx, src, file) {
           document.getElementById('src').style.display = 'block';
         }
         res();
-      };
+      }
+      '';
 
       image.onerror = (e) => {
-        err.innerHTML = 'Error loading image';
+        error.innerHTML = 'Error loading image';
+        return;
       };
 
       image.src = src;
@@ -62,19 +59,21 @@ export const updateDetails = function(file, image) {
   details.innerHTML = detailsHtml;
 }
 
-export const worker_conn = function(pixels, message ="",action = "") {
+export const worker_conn = function(pixels, message = "", action = "") {
   if (!window.Worker) {
-    error.innerHTML = 'Browser does not support workers'
+    error.innerHTML = 'Browser does not support workers';
+    return;
   }
-  const worker = new Worker('woke.js');
+  const worker = new Worker('/src/public/js/mod/worker.js');
 
   worker.onmessage = async (event) => {
-    console.log(event.data);
+    let { pixels, message, action } = event.data
+    console.log(pixels.length, message, action);
   }
 
-  worker.onerror = (err) => error.innerHTML = 'Worker error occurred';
+  worker.onerror = function(err) { error.innerHTML = JSON.stringify(err); return; };
 
-  worker.postMessage({pixels,message,action})
+  worker.postMessage({ pixels, message, action })
 }
 
-setInterval(()=> error.innerHTML = '',4000);
+setInterval(() => error.innerHTML = '', 5000);
