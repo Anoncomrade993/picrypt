@@ -38,7 +38,10 @@
     input
     canvas
     --->
-
+    <div id="throbber-overlay" class="throbber-overlay throbber-hidden">
+      <div class="throbber"></div>
+    </div>
+    <br>
     <section class="holder">
       <div class="preview">
 
@@ -81,7 +84,7 @@
       </div>
       <br>
       <p><i class="fa fa-thin fa-info-circle"><span style="margin-left:5px;">Both buttons will remain disabled until you pick an image</span></i></p>
-    <canvas hidden id="canvas" class="canvas"></canvas>
+      <canvas hidden id="canvas" class="canvas"></canvas>
       <br>
       <span id="errmsg"></span>
     </section>
@@ -120,7 +123,7 @@
     <span>site designed by <a style="color:white" href="#">Anoncomrade993</a></span>
   </copyright>
   <!----footer section end------>
-  <script type="module" src="./index.js"></script>
+  <script type="module" src=".././js/index.js"></script>
 </body>
 
 </html>

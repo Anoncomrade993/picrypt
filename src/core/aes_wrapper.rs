@@ -11,7 +11,7 @@
 use crate::core::aes;
 use std::io;
 
-pub fn encrypt(pixels: &mut Vec<Vec<u8>>, key: &str) -> Result<Vec<Vec<u8>>, io::Error> {
+pub fn encrypt(pixels: Cursor<&mut Vec<Vec<u8>>>, key: &str) -> Result</*Vec<Vec<u8>>*/, io::Error> {
     // Key Expansion
     let mut round_keys = aes::key_expansion(key);
 
@@ -36,6 +36,7 @@ pub fn encrypt(pixels: &mut Vec<Vec<u8>>, key: &str) -> Result<Vec<Vec<u8>>, io:
 
     Ok(pixels.clone()) // Return the encrypted pixels
 }
+
 
 pub fn decrypt(pixels: &mut Vec<Vec<u8>>, key: &str) -> Result<Vec<Vec<u8>>, io::Error> {
     // Key Expansion

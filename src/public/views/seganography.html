@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/src/public/styles/stegan.css">
-  <title>Picrypt| Image Steganography</title>
+  <title>Picrypt | Image Steganography</title>
 </head>
 
 <body>
@@ -21,14 +21,24 @@
       </ul>
     </nav>
   </header>
-  <!--  <div class="tab">
+  <div class="tab">
     <ul>
-      <li><a href="#">Steganograpghy</a></li>
-      <li><a href="#">Encryption</a></li>
-      <li><a href="#">Exif</a></li>
-      <li><a href="#">Decryption</a></li>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Tools</a>
+        <menu hidden  id="Tools" type="toolbar">
+          <ul>
+            <li><a href="#">steganograpghy</a></li>
+            <li><a href="#">exif extraction</a></li>
+            <li><a href="#">image encryption</a></li>
+          </ul>
+        </menu>
+      </li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Issues</a></li>
     </ul>
-  </div>-->
+  </div>
+  <br>
+  <br>
   <main>
     <h3>Image Steganography</h3>
     <!---
@@ -38,6 +48,9 @@
     input
     canvas
     --->
+    <div id="throbber-overlay" class="throbber-overlay throbber-hidden">
+      <div class="throbber"></div>
+    </div>
     <br>
     <section class="holder">
       <div class="preview">
@@ -70,7 +83,7 @@
       </div>
       <br>
       <br>
-      <textarea required autofocus autocomplete="off" placeholder="type here..." id="input" cols="59" rows="0"></textarea>
+      <textarea required autofocus autocomplete="off" placeholder="type here..." id="input" cols="50" rows="0"></textarea>
       <br>
       <br>
       <br>
@@ -90,11 +103,14 @@
   <!---footer section start----->
   <footer>
     <section class="info">
+      
       <h3>More information</h3>
       <ul>
         <li><a href="#"><i class="fa fa-life-ring"><span style="margin-left: 5px">Tech support</span></i></a></li>
         <li><a href="#"><i class="fa fa-info-circle"><span style="margin-left: 5px">About</span></i></a></li>
-        <li><a href="#"><span style="margin-left: 20px">Terms</span></a></li>
+        <li><a href="#"><span style="margin-left: 20px">Policies</span></a></li>
+        <li><a href="#"><span style="margin-left: 20px">Terms & condition</span></a></li>
+
         <!--
         <li><a href="#">About</a></li>
         <li><a href="#">Terms</a></li>
@@ -110,7 +126,6 @@
         <li><a href="#"><i class="fa fa-google"><span style="margin-left: 5px">Gmail</span></i></a></li>
       </ul>
     </section>
-
   </footer>
   <copyright>
     <span>&copy <script>
@@ -122,8 +137,5 @@
   <!----footer section end------>
   <script type="module" src="./../js/index.js" defer></script>
 </body>
-
-
-
 
 </html>

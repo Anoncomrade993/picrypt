@@ -1,14 +1,14 @@
 use rand::Rng;
 use rand::distributions::Alphanumeric;
 
-pub fn generate_watermark() -> String {
+pub fn generate_watermark() -> &str {
     let mut rng = rand::thread_rng();
     
     let watermark: String = (0..6)
         .map(|_| rng.sample(Alphanumeric) as char)
         .collect();
     
-    watermark
+    watermark.as_bytes()
 }
 
 
@@ -51,4 +51,9 @@ pub fn cleanser(data: &mut Vec<u8>, channel:u8) -> Vec<u8> {
         }
     }
     data.to_vec() // Return a clone of the modified data
+}
+
+
+pub fn hasher<'r>(key:'r &str)-> Result<'r &str>{
+  
 }
