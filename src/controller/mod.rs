@@ -2,28 +2,72 @@ mod core;
 mod utils;
 mod models;
 
-use serde_json::Value;
+use axum::extract::Json;
 use serde::{Deserialize,Serialize};
-
 use crate::aes_wrapper::{encrypt,decrypt};
 use pixelate::lsb::{encode,decode};
-use crate::utils::{ d_2d,
-                  cleanser,
-                  splitter,
-                  generate_watermark,
-                  joiner,
-                  hasher
-  
-          };
+use crate::utils::{ 
+d_2d,cleanser,splitter,generate_watermark,
+joiner, hasher,flatten};
 
 
-
-#[derive(Cloneable,Serialize,Deserialize, Debug)]
-struct Body<'r>{
-   pixels:Option<Vec<u8>>, 
-   data:Option<'r &str>,// key or message 
-   dimension:Option<[u8;2]>
+#[derive(Debug,Deserialize,Serialize)]
+struct Data{
+  pixels:Vec<u8>,
+  secret:String,
+  dimensions:[u32;2]
 }
+
+pub fn encryption_pixels(Json(body):Json<Data>)->Result<Json<Data>,io::Error>{
+  let mut pixels = body.pixels;
+  let secret = body.secret;
+  let dims = body.dimensions;
+  
+  let mut 2d_vector = d_2d(pixels);
+  
+  match encrypt(&mut 2d_vector,&secret){
+    Ok(pixels) => {
+    
+      let flattened = flatten(pixels);
+      let watermark = generate_watermark();
+      let encoded = match encode(&mut flattened,&secret,2u8){Ok(enc) => enc,Err(_) => return format!("Error encoding pixels")}
+       
+       if !(encoded && encoded.len() == 0){
+          return Error("")
+       }
+       
+       let data = Data { pixels:encoded, secret,dimensions};
+       Ok(Json(data))
+    }
+  }
+}
+
+
+
+pub fn decryption_pixels(Json(body):Json<Data>)->Result<Json<Data>,io::Error>{
+  let mut pixels = body.pixels;
+  let secret = body.secret;
+  let dims = body.dimensions;
+  
+  match decode(&mut pixels,2u8){
+    Ok(wm) => {
+      
+      let watermark = wm.clone();
+      //search for it in DB
+      
+      let decoded = match decrypt(&mut flattened,&watermark,2u8){Ok(enc) => enc,Err(_) => return format!("Error encoding pixels")}
+       
+       if !(encoded && encoded.len() == 0){
+          return Error("")
+       }
+       
+       let data = Data { pixels:encoded, secret,dimensions};
+       Ok(Json(data))
+    }
+  }
+}
+
+
 
 
 /*****************
@@ -34,43 +78,5 @@ struct Body<'r>{
 - save generated watermark to database 
 - respond with payload { pixels:Vec<u8>, data:String::new(), dimensions:Option<[u8;2]>
 *****************/
-
-
-pub fn encryption(Json(req):Json<Body>) -> Result<Json<Body>>{
-  
-  let mut pixels:Option<Vec<u8>> = Some(req.pixels.clone());
-  let key:Option<'r &str> = Some(req.data);
-  let dimensions:Option<[u8;2]> = Some(req.dimensions);
-  let mut 2d_pixels = d_2d(mut pixels.unwrap());
-  
-  let mut encrypted_pixels = match encrypt(&mut 2d_pixels,&data.unwrap()){
-       Ok(pixels) => pixels,
-       Err(err) => return format!("{err}")
-  };
-  
-  const CHANNEL:u8 = 3u8;
-  let watermark_tag:&str = generate_watermark(); //random generated watermark for images
-  let hashed_key = hasher(&key);
-  
-  let pixel_encoded = match encode(&mut encrypted_pixels,&watermark_tag, CHANNEL){
-    Ok(pixels) => pixels,
-    Err(err) => return format!("{err}")
-  }
-   
-     //save  to db ,if saved then move to inject into pixels
-  /*
-  doc!{
-    Image{
-      watermark:Some(watermark_tag),
-      key:Some(hashed_key)
-    }
-  }
-    */
-     json!(Body{
-         pixels:Some(pixel_encoded),
-         data:Some(String::from("")),
-         dimensions:Some(dimensions)
-       })
-}
 
 

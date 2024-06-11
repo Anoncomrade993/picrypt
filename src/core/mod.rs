@@ -1,2 +1,1 @@
-pub mod aes_wrapper;
-mod aes;
+pub mod aes;
