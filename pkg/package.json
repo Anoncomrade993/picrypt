@@ -1,0 +1,17 @@
+{
+  "name": "picrypt",
+  "collaborators": [
+    "Dessxvii <anoncomrade993@gmail.com>"
+  ],
+  "version": "0.1.1",
+  "files": [
+    "picrypt_bg.wasm",
+    "picrypt.js",
+    "picrypt.d.ts"
+  ],
+  "module": "picrypt.js",
+  "types": "picrypt.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

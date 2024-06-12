@@ -1,5 +1,5 @@
 hidden = ["target", ".cargo"]
-modules = ["rust-stable:v4-20240117-0bd73cd"]
+modules = ["rust-stable"]
 run = "cargo run"
 
 [nix]
