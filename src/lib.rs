@@ -20,20 +20,17 @@ use pixelate::lsb::{encode, decode};
 
 #[wasm_bindgen]
 pub fn encode_pixels(pixels:&[u8],data:&str, channel:u32) -> Vec<u8>{
-  let res =  match encode(&mut pixels.to_vec(),data, channel as u8){
-     Ok(encoded) => encoded,
-     Err(_) => return format!("error")
-   }
+  let res =  encode(&mut pixels.to_vec(),data, channel as u8).unwrap();
    res
 }
 
 
-#[[wasm_bindgen]
+#[wasm_bindgen]
 pub fn decode_pixels(pixels:&[u8],channel:u32) -> String{
-  let res =  match decode(&mut pixels.to_vec(),channel as u8){
+  let res =  match decode(pixels.to_vec(),channel as u8){
      Ok(encoded) => encoded.to_string(),
      Err(_) => return format!("error")
-   }
+   };
    res
 }
 

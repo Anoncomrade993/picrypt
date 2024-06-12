@@ -1,6 +1,19 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+* @param {Uint8Array} pixels
+* @param {string} data
+* @param {number} channel
+* @returns {Uint8Array}
+*/
+export function encode_pixels(pixels: Uint8Array, data: string, channel: number): Uint8Array;
+/**
+* @param {Uint8Array} pixels
+* @param {number} channel
+* @returns {string}
+*/
+export function decode_pixels(pixels: Uint8Array, channel: number): string;
+/**
 * @param {Uint8Array} buffers
 * @param {string} key
 * @returns {Uint8Array}
@@ -17,6 +30,8 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly encode_pixels: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
+  readonly decode_pixels: (a: number, b: number, c: number, d: number) => void;
   readonly encrypt: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly decrypt: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
