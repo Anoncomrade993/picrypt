@@ -4,6 +4,7 @@ mod utils;
 use wasm_bindgen::prelude::*;
 use crate::core::aes;
 use crate::utils::*;
+use pixelate::lsb::{encode, decode};
 
 
 /*******************
@@ -16,6 +17,36 @@ use crate::utils::*;
 * Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 * Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
 ******************/
+
+#[wasm_bindgen]
+pub fn encode_pixels(pixels:&[u8],data:&str, channel:u32) -> Vec<u8>{
+  let res =  match encode(&mut pixels.to_vec(),data, channel as u8){
+     Ok(encoded) => encoded,
+     Err(_) => return format!("error")
+   }
+   res
+}
+
+
+#[[wasm_bindgen]
+pub fn decode_pixels(pixels:&[u8],channel:u32) -> String{
+  let res =  match decode(&mut pixels.to_vec(),channel as u8){
+     Ok(encoded) => encoded.to_string(),
+     Err(_) => return format!("error")
+   }
+   res
+}
+
+
+
+/*******
+- encrypt the pixels with secret 
+- inject the encrypted pixels with a watermark  { channel RED}
+return encoded pixels
+**/
+
+
+
 
 #[wasm_bindgen]
 pub fn encrypt(buffers:&[u8], key: &str) -> Vec<u8> {
@@ -45,6 +76,15 @@ pub fn encrypt(buffers:&[u8], key: &str) -> Vec<u8> {
     flat 
   // Return the encrypted pixels
 }
+
+
+/*****
+- extract the encoded watermark { channel RED } 
+- match it against database
+- decrypt with secret 
+return decrypted 
+***/
+
 
 #[wasm_bindgen]
 pub fn decrypt(buffers:&[u8], key: &str) -> Vec<u8> {
