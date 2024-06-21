@@ -9,9 +9,6 @@
     "picrypt.js",
     "picrypt.d.ts"
   ],
-  "module": "picrypt.js",
-  "types": "picrypt.d.ts",
-  "sideEffects": [
-    "./snippets/*"
-  ]
+  "main": "picrypt.js",
+  "types": "picrypt.d.ts"
 }
