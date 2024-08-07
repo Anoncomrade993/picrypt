@@ -96,7 +96,11 @@ pub fn decrypt(buffers:&[u8], key: &str) -> Vec<u8> {
     let flat = flatten(pixels);
     flat // Return the decrypted pixels
 }
-
+#[wasm_bindgen]
+pub fn deep_clean(pixels:&[u8],channel:u8) -> Vec<u8>{
+  let pack = cleanser(&mut pixels.to_vec(), channel);
+  pack
+}
 /*
 pub fn test(pixels:&mut Vec<Vec<u8>>){
     println!("init {:?}",pixels);

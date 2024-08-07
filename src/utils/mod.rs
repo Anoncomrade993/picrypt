@@ -1,16 +1,5 @@
-//use rand::Rng;
-//use rand::distributions::Alphanumeric;
 
-/*pub fn generate_watermark() -> &str {
-    let mut rng = rand::thread_rng();
-    
-    let watermark: String = (0..6)
-        .map(|_| rng.sample(Alphanumeric) as char)
-        .collect();
-    
-    watermark.as_bytes()
-}*/
-
+///convert 1d to 2d 
 pub fn d_2d(pixels: Vec<u8>) -> Vec<Vec<u8>> {
     let rows: usize = 4;
     let cols = pixels.len() / rows;
@@ -24,20 +13,8 @@ pub fn d_2d(pixels: Vec<u8>) -> Vec<Vec<u8>> {
 
     result
 }
-pub fn joiner(mut data: String, watermark: String) -> String {
-    data.push_str(&watermark); // append another String
-    data
-}
-/*
-pub fn splitter(data: String) -> Result<(&str, String), String> {
-    let len = data.len();
-    if len <= 6 {
-        Err(data) // Return the data as an error if it's too short
-    } else {
-      let fess = &data[len-6..];
-        Ok((fess, data[..len-6].to_string())) // Return the split data as a tuple of slices
-    }
-}*/
+
+///LSB cleanser 
 pub fn cleanser(data: &mut Vec<u8>, channel:u8) -> Vec<u8> {
     let len = data.len();
     
@@ -53,11 +30,3 @@ pub fn cleanser(data: &mut Vec<u8>, channel:u8) -> Vec<u8> {
 pub fn flatten(v:Vec<Vec<u8>>)-> Vec<u8>{
    v.concat()
 }
-
-
-/*fn vec_to_slice(buffers:&mut Vec<Vec<u8>>) -> &[u8] {
-    let total_len: usize = buffers.iter().map(|buf| buf.len()).sum();
-    let mut concatenated: Vec<u8> = Vec::with_capacity(total_len);
-    for buffer in buffers {concatenated.extend_from_slice(&buffer);}
- concatenated.into()
-}*/
