@@ -4,13 +4,13 @@ mod utils;
 use wasm_bindgen::prelude::*;
 use crate::core::aes;
 use crate::utils::*;
-use pixelate::lsb::{encode, decode};
 
 
 /*******************
 * Name: Dessxvii 
 * Email: anoncomrade993@gmail.com
-* 
+* updated: 7/08/2024 6:39Am
+*
 * GNU GENERAL PUBLIC LICENSE
 * Version 3, 29 June 2007
 *
@@ -18,21 +18,6 @@ use pixelate::lsb::{encode, decode};
 * Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
 ******************/
 
-#[wasm_bindgen]
-pub fn encode_pixels(pixels:&[u8],data:&str, channel:u32) -> Vec<u8>{
-  let res =  encode(&mut pixels.to_vec(),data, channel as u8).unwrap();
-   res
-}
-
-
-#[wasm_bindgen]
-pub fn decode_pixels(pixels:&[u8],channel:u32) -> String{
-  let res =  match decode(pixels.to_vec(),channel as u8){
-     Ok(encoded) => encoded.to_string(),
-     Err(_) => return format!("error")
-   };
-   res
-}
 
 
 
